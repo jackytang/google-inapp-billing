@@ -1,7 +1,6 @@
 package games.moisoni.google_iab.service;
 
 import android.app.Activity;
-import android.net.wifi.aware.PublishConfig;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -23,7 +22,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import games.moisoni.google_iab.listeners.RewardedVideoEventListener;
+import games.moisoni.google_iab.listeners.RewardedAdEventListener;
 import games.moisoni.google_iab.utils.CommonUtil;
 
 /**
@@ -42,27 +41,24 @@ import games.moisoni.google_iab.utils.CommonUtil;
 public class RewardedVideoService implements Serializable {
     @Serial
     private static final long serialVersionUID = 6729803763120205545L;
-
-    private static final String TAG = "RewardAdService";
     private static boolean initialized = false;
+    private static final String TAG = "RewardedVideoService";
 
     // 双槽位广告
     private RewardedAd slotA;
     private RewardedAd slotB;
+    // 存储外部传入的配置
+    private String adUnitId;
+    private List<String> testDeviceHashedIds;
     private WeakReference<Activity> activityRef;
+    private RewardedAdEventListener adCallback;
 
     private final AtomicBoolean isShowing = new AtomicBoolean(false);
     private final AtomicBoolean isLoadingSlotA = new AtomicBoolean(false);
     private final AtomicBoolean isLoadingSlotB = new AtomicBoolean(false);
     private final AtomicBoolean isMobileAdsInitializeCalled = new AtomicBoolean(false);
-
     // 用于轮换使用两个槽位
     private final AtomicInteger currentSlot = new AtomicInteger(0);
-
-    // 存储外部传入的配置
-    private String adUnitId;
-    private List<String> testDeviceHashedIds;
-    private RewardedVideoEventListener adCallback;
 
     public static RewardedVideoService getInstance() {
         return SingletonHolder.INSTANCE;
@@ -71,7 +67,7 @@ public class RewardedVideoService implements Serializable {
     /**
      * 设置广告回调（可选，用于动态更新回调）
      */
-    public void setAdEventListener(@NonNull RewardedVideoEventListener callback) {
+    public void setAdEventListener(@NonNull RewardedAdEventListener callback) {
         this.adCallback = callback;
     }
 
@@ -82,7 +78,7 @@ public class RewardedVideoService implements Serializable {
      * @param adUnitId 广告单元 ID
      * @param callback 广告状态回调
      */
-    public void init(@NonNull Activity activity, @NonNull String adUnitId, @NonNull RewardedVideoEventListener callback) {
+    public void init(@NonNull Activity activity, @NonNull String adUnitId, @NonNull RewardedAdEventListener callback) {
         Log.d(TAG, "init with adUnitId: " + adUnitId);
 
         if (adUnitId.trim().isEmpty()) {
@@ -113,7 +109,6 @@ public class RewardedVideoService implements Serializable {
             });
 
             // Load ads on the main thread.
-            // runOnUiThread(this::loadAllRewardedAds);
             CommonUtil.runOnUiThread(this.activityRef.get(), this::loadAllRewardedAds);
         }).start();
     }
@@ -134,7 +129,7 @@ public class RewardedVideoService implements Serializable {
         loadRewardedAdForSlot(false); // 加载槽位B
     }
 
-    public void showRewardedVideo() {
+    public void showRewardedVideoAd() {
         RewardedAd adToShow = getAvailableAd();
 
         if (adToShow == null) {
@@ -269,7 +264,7 @@ public class RewardedVideoService implements Serializable {
         if (backupAd != null && !isShowing.get()) {
             Log.d(TAG, "Trying to show backup ad");
             // 递归调用，但会使用不同的广告
-            showRewardedVideo();
+            showRewardedVideoAd();
         }
     }
 
