@@ -1,6 +1,7 @@
 package games.moisoni.google_iab.service;
 
 import android.app.Activity;
+import android.net.wifi.aware.PublishConfig;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
+import com.google.android.gms.common.util.CollectionUtils;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -59,27 +61,28 @@ public class RewardedVideoService implements Serializable {
 
     // 存储外部传入的配置
     private String adUnitId;
-    private String testDeviceHashedId;
+    private List<String> testDeviceHashedIds;
     private RewardedVideoEventListener adCallback;
 
     public static RewardedVideoService getInstance() {
         return SingletonHolder.INSTANCE;
     }
+
     /**
      * 设置广告回调（可选，用于动态更新回调）
      */
     public void setAdEventListener(@NonNull RewardedVideoEventListener callback) {
         this.adCallback = callback;
     }
+
     /**
      * 初始化广告管理器
      *
      * @param activity 当前 Activity 引用
      * @param adUnitId 广告单元 ID
-     * @param testDeviceHashedId 测试设备哈希 ID（可为 null）
      * @param callback 广告状态回调
      */
-    public void init(@NonNull Activity activity, @NonNull String adUnitId, String testDeviceHashedId, @NonNull RewardedVideoEventListener callback) {
+    public void init(@NonNull Activity activity, @NonNull String adUnitId, @NonNull RewardedVideoEventListener callback) {
         Log.d(TAG, "init with adUnitId: " + adUnitId);
 
         if (adUnitId.trim().isEmpty()) {
@@ -88,22 +91,20 @@ public class RewardedVideoService implements Serializable {
 
         this.activityRef = new WeakReference<>(activity);
         this.adUnitId = adUnitId;
-        this.testDeviceHashedId = testDeviceHashedId;
         this.adCallback = callback;
 
+        this.initRequestConfiguration();
         this.initializeMobileAdsSdk();
+    }
+
+    public final void setTestDeviceHashedIds(List<String> testDeviceHashedIds) {
+        this.testDeviceHashedIds = testDeviceHashedIds;
     }
 
     private void initializeMobileAdsSdk() {
         if (isMobileAdsInitializeCalled.getAndSet(true)) {
             return;
         }
-
-        // Set your test devices.
-        MobileAds.setRequestConfiguration(
-                new RequestConfiguration.Builder()
-                        .setTestDeviceIds(List.of(testDeviceHashedId))
-                        .build());
 
         new Thread(() -> {
             // Initialize the Google Mobile Ads SDK on a background thread.
@@ -115,6 +116,17 @@ public class RewardedVideoService implements Serializable {
             // runOnUiThread(this::loadAllRewardedAds);
             CommonUtil.runOnUiThread(this.activityRef.get(), this::loadAllRewardedAds);
         }).start();
+    }
+
+    private void initRequestConfiguration() {
+        if (CollectionUtils.isEmpty(testDeviceHashedIds)) {
+            return;
+        }
+
+        var configuration = new RequestConfiguration.Builder()
+                .setTestDeviceIds(testDeviceHashedIds)
+                .build();
+        MobileAds.setRequestConfiguration(configuration);
     }
 
     private void loadAllRewardedAds() {
@@ -216,6 +228,7 @@ public class RewardedVideoService implements Serializable {
             });
         });
     }
+
     /**
      * 获取可用的广告（优先使用轮换策略）
      */
@@ -240,6 +253,7 @@ public class RewardedVideoService implements Serializable {
 
         return null;
     }
+
     /**
      * 显示备用广告（当主广告失败时）
      */
