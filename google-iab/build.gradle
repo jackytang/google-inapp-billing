@@ -10,7 +10,7 @@ android {
     compileSdkVersion 36
 
     defaultConfig {
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 36
 
         multiDexEnabled true
@@ -38,6 +38,10 @@ android {
             allVariants()
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
 }
 
 afterEvaluate {
@@ -63,4 +67,7 @@ dependencies {
     implementation 'com.google.guava:guava:33.4.8-android'
 
     implementation 'com.android.billingclient:billing:7.1.1'
+
+    implementation "com.google.android.gms:play-services-games-v2:21.0.0"
+    implementation "com.google.android.gms:play-services-ads:24.6.0"
 }
