@@ -9,7 +9,7 @@ package games.moisoni.google_iab.listeners;
  *
  * @author JackyTang
  */
-public interface RewardedVideoEventListener {
+public interface RewardedAdEventListener {
     /**
      * 用户获得奖励回调
      * @param rewardEarned 是否获得奖励
