@@ -38,7 +38,7 @@ import games.moisoni.utils.CommonUtil;
  * @author JackyTang
  */
 @SuppressWarnings("unused")
-public class RewardedVideoService implements Serializable {
+public class RewardedVideoAdService implements Serializable {
     @Serial
     private static final long serialVersionUID = 6729803763120205545L;
     private static boolean initialized = false;
@@ -60,7 +60,7 @@ public class RewardedVideoService implements Serializable {
     // 用于轮换使用两个槽位
     private final AtomicInteger currentSlot = new AtomicInteger(0);
 
-    public static RewardedVideoService getInstance() {
+    public static RewardedVideoAdService getInstance() {
         return SingletonHolder.INSTANCE;
     }
 
@@ -375,7 +375,7 @@ public class RewardedVideoService implements Serializable {
         loadAllRewardedAds();
     }
 
-    private RewardedVideoService() {
+    private RewardedVideoAdService() {
         if (initialized) {
             throw new RuntimeException("单例模式被破坏，请使用 getInstance() 方法获取实例");
         }
@@ -384,7 +384,7 @@ public class RewardedVideoService implements Serializable {
     }
 
     private static class SingletonHolder {
-        private static final RewardedVideoService INSTANCE = new RewardedVideoService();
+        private static final RewardedVideoAdService INSTANCE = new RewardedVideoAdService();
     }
 
     @Serial

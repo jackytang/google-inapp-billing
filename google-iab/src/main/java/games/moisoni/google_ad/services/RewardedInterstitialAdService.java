@@ -25,7 +25,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import games.moisoni.google_ad.listeners.RewardedAdEventListener;
 import games.moisoni.utils.CommonUtil;
 
-public class RewardedInterstitialService implements Serializable {
+public class RewardedInterstitialAdService implements Serializable {
     @Serial
     private static final long serialVersionUID = 6729803763120205545L;
     private static boolean initialized = false;
@@ -45,8 +45,8 @@ public class RewardedInterstitialService implements Serializable {
     // 用于轮换使用两个槽位
     private final AtomicInteger currentSlot = new AtomicInteger(0);
 
-    public static RewardedInterstitialService getInstance() {
-        return RewardedInterstitialService.SingletonHolder.INSTANCE;
+    public static RewardedInterstitialAdService getInstance() {
+        return RewardedInterstitialAdService.SingletonHolder.INSTANCE;
     }
 
     /**
@@ -354,7 +354,7 @@ public class RewardedInterstitialService implements Serializable {
         loadAllRewardedAds();
     }
 
-    private RewardedInterstitialService() {
+    private RewardedInterstitialAdService() {
         if (initialized) {
             throw new RuntimeException("单例模式被破坏，请使用 getInstance() 方法获取实例");
         }
@@ -363,11 +363,11 @@ public class RewardedInterstitialService implements Serializable {
     }
 
     private static class SingletonHolder {
-        private static final RewardedInterstitialService INSTANCE = new RewardedInterstitialService();
+        private static final RewardedInterstitialAdService INSTANCE = new RewardedInterstitialAdService();
     }
 
     @Serial
     private Object readResolve() {
-        return RewardedInterstitialService.SingletonHolder.INSTANCE;
+        return RewardedInterstitialAdService.SingletonHolder.INSTANCE;
     }
 }
