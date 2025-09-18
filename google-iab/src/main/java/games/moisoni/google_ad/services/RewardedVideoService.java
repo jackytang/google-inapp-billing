@@ -1,4 +1,4 @@
-package games.moisoni.google_iab.service;
+package games.moisoni.google_ad.services;
 
 import android.app.Activity;
 import android.util.Log;
@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import games.moisoni.google_iab.listeners.RewardedAdEventListener;
-import games.moisoni.google_iab.utils.CommonUtil;
+import games.moisoni.google_ad.listeners.RewardedAdEventListener;
+import games.moisoni.utils.CommonUtil;
 
 /**
  * RewardAdService class for managing rewarded advertisements.

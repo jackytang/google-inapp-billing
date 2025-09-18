@@ -1,4 +1,4 @@
-package games.moisoni.google_iab.utils;
+package games.moisoni.utils;
 
 import android.app.Activity;
 import android.widget.Toast;

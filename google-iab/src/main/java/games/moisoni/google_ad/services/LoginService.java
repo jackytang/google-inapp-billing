@@ -1,4 +1,4 @@
-package games.moisoni.google_iab.service;
+package games.moisoni.google_ad.services;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -18,8 +18,8 @@ import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import games.moisoni.google_iab.listeners.LoginEventListener;
-import games.moisoni.google_iab.utils.CommonUtil;
+import games.moisoni.google_ad.listeners.LoginEventListener;
+import games.moisoni.utils.CommonUtil;
 
 /**
  * Google 登录服务

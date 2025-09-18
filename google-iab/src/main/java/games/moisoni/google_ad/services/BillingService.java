@@ -1,15 +1,13 @@
-package games.moisoni.google_iab.service;
+package games.moisoni.google_ad.services;
 
 import android.app.Activity;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.List;
 
 import games.moisoni.google_iab.BillingConnector;

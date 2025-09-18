@@ -1,4 +1,4 @@
-package games.moisoni.google_iab.listeners;
+package games.moisoni.google_ad.listeners;
 
 /**
  * Listener interface for AdMob advertisement events
