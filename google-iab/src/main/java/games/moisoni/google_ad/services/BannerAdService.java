@@ -138,7 +138,6 @@ public class BannerAdService implements Serializable {
 
         this.adUnitId = adUnitId;
         this.activityRef = new WeakReference<>(activity);
-        // adContainerView = activityRef.get().findViewById(android.R.id.content);
         initRequestConfiguration();
         initializeMobileAdsSdk();
     }
