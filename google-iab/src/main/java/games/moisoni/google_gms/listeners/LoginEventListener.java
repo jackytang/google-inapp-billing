@@ -1,4 +1,4 @@
-package games.moisoni.google_ad.listeners;
+package games.moisoni.google_gms.listeners;
 
 /**
  * Listener interface for login events

@@ -1,4 +1,4 @@
-package games.moisoni.google_ad.services;
+package games.moisoni.google_gms.services;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -18,7 +18,7 @@ import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import games.moisoni.google_ad.listeners.LoginEventListener;
+import games.moisoni.google_gms.listeners.LoginEventListener;
 import games.moisoni.utils.CommonUtil;
 
 /**
